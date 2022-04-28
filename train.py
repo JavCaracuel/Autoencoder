@@ -10,6 +10,7 @@ BATCH_SIZE = 2
 EPOCHS = 150
 
 SPECTROGRAMS_PATH = "./clear_numpy/"
+SPECTROGRAMS_PATH_MIXED = "./mixed_numpy/"
 
 
 def load_fsdd(spectrograms_path):
@@ -24,9 +25,9 @@ def load_fsdd(spectrograms_path):
     return x_train
 
 
-def train(x_train, learning_rate, batch_size, epochs):
+def train(x_train,y_train, learning_rate, batch_size, epochs):
     autoencoder = VAE(
-        input_shape=(256, 259, 1),
+        input_shape=(256, 64, 1),
         conv_filters=(512, 256, 128, 64, 32),
         conv_kernels=(3, 3, 3, 3, 3),
         conv_strides=(2, 2, 2, 2, (2, 1)),
@@ -34,17 +35,20 @@ def train(x_train, learning_rate, batch_size, epochs):
     )
     autoencoder.summary()
     autoencoder.compile(learning_rate)
-    autoencoder.train(x_train, batch_size, epochs)
+    autoencoder.train(x_train,y_train, batch_size, epochs)
     return autoencoder
 
 
 if __name__ == "__main__":
-    x_train = load_fsdd(SPECTROGRAMS_PATH)
+    y_train = load_fsdd(SPECTROGRAMS_PATH)
+    x_train = load_fsdd(SPECTROGRAMS_PATH_MIXED)
     print(x_train.shape)
     #reshape xtrain to (7,256,64,1)
-    #x_train = x_train[:,:,:64,:]
+    x_train = x_train[:,:,:64,:]
+    y_train = y_train[:,:,:64,:]
     #add padding shape [2,256,259,1] to [2,256,272,1]
     
     print(x_train.shape)
-    autoencoder = train(x_train, LEARNING_RATE, BATCH_SIZE, EPOCHS)
+    print(y_train.shape)
+    autoencoder = train(x_train,y_train, LEARNING_RATE, BATCH_SIZE, EPOCHS)
     autoencoder.save("model")

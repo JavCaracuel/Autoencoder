@@ -54,9 +54,9 @@ class VAE:
                            loss=self._calculate_combined_loss,
                            )
 
-    def train(self, x_train, batch_size, num_epochs):
+    def train(self, x_train,y_train, batch_size, num_epochs):
         self.model.fit(x_train,
-                       x_train,
+                       y_train,
                        batch_size=batch_size,
                        epochs=num_epochs,
                        shuffle=True)
