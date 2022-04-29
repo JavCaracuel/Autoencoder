@@ -52,7 +52,8 @@ class VAE:
         optimizer = Adam(learning_rate=learning_rate)
         self.model.compile(optimizer=optimizer,
                            loss=self._calculate_combined_loss,
-                           )
+                           metrics=[self._calculate_reconstruction_loss,
+                                    self._calculate_kl_loss])
 
     def train(self, x_train,y_train, batch_size, num_epochs):
         self.model.fit(x_train,
@@ -133,10 +134,8 @@ class VAE:
 
     def _build_decoder(self):
         decoder_input = self._add_decoder_input()
-        print(decoder_input.shape)
         dense_layer = self._add_dense_layer(decoder_input)
         reshape_layer = self._add_reshape_layer(dense_layer)
-        print(np.shape(reshape_layer))
         conv_transpose_layers = self._add_conv_transpose_layers(reshape_layer)
         decoder_output = self._add_decoder_output(conv_transpose_layers)
         self.decoder = Model(decoder_input, decoder_output, name="decoder")

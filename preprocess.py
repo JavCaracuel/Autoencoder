@@ -177,15 +177,15 @@ class PreprocessingPipeline:
         }
 
 if __name__ == "__main__":
-    FRAME_SIZE = 510
-    HOP_LENGTH = 256
+    FRAME_SIZE = 512
+    HOP_LENGTH = 259
     DURATION = 3  # in seconds
     SAMPLE_RATE = 22050
     MONO = True
 
-    SPECTROGRAMS_SAVE_DIR = "/home/valerio/datasets/fsdd/spectrograms/"
-    MIN_MAX_VALUES_SAVE_DIR = "/home/valerio/datasets/fsdd/"
-    FILES_DIR = "/home/valerio/datasets/fsdd/audio/"
+    SPECTROGRAMS_SAVE_DIR = "./spectrogram_dir/"
+    MIN_MAX_VALUES_SAVE_DIR = "./min_max_dir/"
+    FILES_DIR = "./audios_wav/"
 
     # instantiate all objects
     loader = Loader(SAMPLE_RATE, DURATION, MONO)
